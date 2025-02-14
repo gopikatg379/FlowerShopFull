@@ -37,7 +37,7 @@ public class WishlistController {
         return wishlistService.addWishlist(userId,flowerId);
     }
 
-    @GetMapping("view")
+    @GetMapping("view") 
     public ResponseEntity<List<Wishlist>> viewWishlist(@RequestHeader("Authorization")String token){
         String jwt = token.substring(7);
         Integer userId = getUserIdFromToken(jwt);
