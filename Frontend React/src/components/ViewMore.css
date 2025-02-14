@@ -1,0 +1,80 @@
+/* Card Container */
+.card-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 30px;
+  }
+  
+  /* Card Styling */
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    width: 300px;
+    padding-bottom: 15px;
+  }
+  
+  .card:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Image Styling */
+  .card-img {
+    width: 90%;
+    height: 200px;
+    object-fit: cover;
+    margin-top: 10px;
+    border-radius: 8px;
+  }
+  
+  /* Card Body */
+  .card-body {
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .card-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .card-subtitle {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+  }
+  
+  .card-text {
+    font-size: 18px;
+    font-weight: bold;
+    color: #28a745;
+    margin-top: 10px;
+  }
+  
+  /* Add to Cart Button */
+  .add-to-cart-btn {
+    background: #28a745;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    padding: 8px 15px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .add-to-cart-btn:hover {
+    background: #218838;
+  }
+  
