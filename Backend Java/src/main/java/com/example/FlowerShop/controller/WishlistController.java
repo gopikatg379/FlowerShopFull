@@ -43,4 +43,9 @@ public class WishlistController {
         Integer userId = getUserIdFromToken(jwt);
         return wishlistService.viewWishlist(userId);
     }
+
+    @DeleteMapping("delete/{wishlistId}")
+    public ResponseEntity<String> deleteWishlist(@PathVariable Integer wishlistId){
+        return wishlistService.deleteWishlist(wishlistId);
+    }
 }

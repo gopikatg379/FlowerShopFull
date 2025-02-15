@@ -51,4 +51,9 @@ public class WishlistService {
         List<Wishlist> wishlist = wishlistDao.findByUser(user);
         return ResponseEntity.ok(wishlist);
     }
+
+    public ResponseEntity<String> deleteWishlist(Integer wishlistId) {
+        wishlistDao.deleteById(wishlistId);
+        return new ResponseEntity<>("deleted",HttpStatus.OK);
+    }
 }
