@@ -17,6 +17,11 @@ public class User {
     private String email;
     private String password;
     private String image;
+
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+
     @OneToOne(mappedBy = "user",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private Cart cart;
 
@@ -50,6 +55,19 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void setRole(Role role) {
+        if (role != null) {
+            this.role = Role.valueOf(role.name().toUpperCase()); // Force uppercase by calling .name() which is in uppercase
+        } else {
+            this.role = null;
+        }
+    }
+
+
+    public Role getRole() {
+        return role;
     }
 
     public String getImage() {

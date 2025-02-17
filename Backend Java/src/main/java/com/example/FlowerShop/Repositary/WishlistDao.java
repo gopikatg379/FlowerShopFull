@@ -1,4 +1,4 @@
-package com.example.FlowerShop.Dao;
+package com.example.FlowerShop.Repositary;
 
 import com.example.FlowerShop.models.Flower;
 import com.example.FlowerShop.models.User;

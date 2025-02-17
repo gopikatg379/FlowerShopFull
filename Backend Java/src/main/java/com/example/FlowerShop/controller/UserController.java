@@ -35,8 +35,9 @@ public class UserController {
             @RequestParam("name") String name,
             @RequestParam("password") String password,
             @RequestParam("email") String email,
-            @RequestParam("image") MultipartFile image) throws IOException {
-        return userService.registerUser(name, password, email, image);
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("role") String role) throws IOException {
+        return userService.registerUser(name, password, email, image,role);
     }
 
     @PostMapping("login")

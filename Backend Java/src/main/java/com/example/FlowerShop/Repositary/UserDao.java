@@ -1,6 +1,5 @@
-package com.example.FlowerShop.Dao;
+package com.example.FlowerShop.Repositary;
 
-import com.example.FlowerShop.models.Cart;
 import com.example.FlowerShop.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -8,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CartDao extends JpaRepository<Cart,Integer> {
-    Optional<Cart> findByUser(User user);
+public interface UserDao extends JpaRepository<User,Integer> {
+    Optional<User> findByEmail(String email);
 }

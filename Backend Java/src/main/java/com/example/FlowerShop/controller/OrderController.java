@@ -1,21 +1,19 @@
 package com.example.FlowerShop.controller;
 
 import com.example.FlowerShop.Repositary.UserDao;
-import com.example.FlowerShop.Services.CartService;
-import com.example.FlowerShop.models.Cart;
+import com.example.FlowerShop.Services.OrderService;
+import com.example.FlowerShop.dto.OrderRequest;
 import com.example.FlowerShop.models.User;
 import com.example.FlowerShop.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
-@RequestMapping("cart")
-public class CartController {
+@RequestMapping("order")
+public class OrderController {
     @Autowired
-    private CartService cartService;
+    private OrderService orderService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -31,22 +29,9 @@ public class CartController {
     }
 
     @PostMapping("add")
-    private ResponseEntity<String> addCart(@RequestHeader("Authorization") String token, @RequestParam Integer flowerId) {
+    public ResponseEntity<String> addOrder(@RequestHeader("Authorization")String token, @RequestBody OrderRequest orderRequest){
         String jwt = token.substring(7);
         Integer userId = getUserIdFromToken(jwt);
-        return cartService.addToCart(userId, flowerId);
+        return orderService.placeOrder(userId,orderRequest);
     }
-
-    @GetMapping("view")
-    private ResponseEntity<List<Cart>> viewCart(@RequestHeader("Authorization") String token){
-        String jwt = token.substring(7);
-        Integer userId = getUserIdFromToken(jwt);
-        return cartService.viewCart(userId);
-    }
-
-    @DeleteMapping("delete/{cartId}")
-    private ResponseEntity<String>deleteCart(@PathVariable Integer cartId){
-        return cartService.deleteCart(cartId);
-    }
-
 }

@@ -1,9 +1,9 @@
 package com.example.FlowerShop.Services;
 
-import com.example.FlowerShop.Dao.CartDao;
-import com.example.FlowerShop.Dao.CartItemDao;
-import com.example.FlowerShop.Dao.FlowerDao;
-import com.example.FlowerShop.Dao.UserDao;
+import com.example.FlowerShop.Repositary.CartDao;
+import com.example.FlowerShop.Repositary.CartItemDao;
+import com.example.FlowerShop.Repositary.FlowerDao;
+import com.example.FlowerShop.Repositary.UserDao;
 import com.example.FlowerShop.models.Cart;
 import com.example.FlowerShop.models.CartItems;
 import com.example.FlowerShop.models.Flower;
@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;

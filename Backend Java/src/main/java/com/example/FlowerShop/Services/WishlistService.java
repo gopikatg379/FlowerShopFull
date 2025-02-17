@@ -1,8 +1,8 @@
 package com.example.FlowerShop.Services;
 
-import com.example.FlowerShop.Dao.FlowerDao;
-import com.example.FlowerShop.Dao.UserDao;
-import com.example.FlowerShop.Dao.WishlistDao;
+import com.example.FlowerShop.Repositary.FlowerDao;
+import com.example.FlowerShop.Repositary.UserDao;
+import com.example.FlowerShop.Repositary.WishlistDao;
 import com.example.FlowerShop.models.Flower;
 import com.example.FlowerShop.models.User;
 import com.example.FlowerShop.models.Wishlist;
@@ -11,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 

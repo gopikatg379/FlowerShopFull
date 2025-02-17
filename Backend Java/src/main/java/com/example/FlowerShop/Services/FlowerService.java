@@ -1,6 +1,6 @@
 package com.example.FlowerShop.Services;
 
-import com.example.FlowerShop.Dao.FlowerDao;
+import com.example.FlowerShop.Repositary.FlowerDao;
 import com.example.FlowerShop.models.Flower;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,7 +12,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -49,5 +51,18 @@ public class FlowerService {
 
     public ResponseEntity<List<Flower>> searchFlower(String flower) {
         return new ResponseEntity<>(flowerDao.findByFlowerNameContainingIgnoreCase(flower),HttpStatus.OK);
+    }
+
+    public Map<String, Integer> getFlowerStatistics() {
+        List<Flower> flowers = flowerDao.findAll();
+        Map<String, Integer> statistics = new HashMap<>();
+
+
+        for (Flower flower : flowers) {
+            String flowerName = flower.getFlower_name();
+            statistics.put(flowerName, statistics.getOrDefault(flowerName, 0) + 1);
+        }
+
+        return statistics;
     }
 }

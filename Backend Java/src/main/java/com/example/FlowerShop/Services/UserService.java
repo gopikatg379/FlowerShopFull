@@ -1,12 +1,11 @@
 package com.example.FlowerShop.Services;
 
-import com.example.FlowerShop.Dao.UserDao;
+import com.example.FlowerShop.Repositary.UserDao;
+import com.example.FlowerShop.models.Role;
 import com.example.FlowerShop.models.User;
 import com.example.FlowerShop.security.JwtUtil;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -34,13 +33,24 @@ public class UserService implements UserDetailsService{
 
     private final String UPLOAD_DIR = "uploads/users/";
 
-    public ResponseEntity<String> registerUser(String name, String password, String email, MultipartFile image){
+    public ResponseEntity<String> registerUser(String name, String password, String email, MultipartFile image,String role){
         if(userDao.findByEmail(email).isPresent()){
             return new ResponseEntity<>("Email is already taken",HttpStatus.BAD_REQUEST);
+        }
+        Role userRole;
+        try {
+            String normalizedRole = role.toUpperCase();
+            System.out.println("Received role: " + role);
+            userRole = Role.valueOf(normalizedRole); // Convert string to ENUM
+            System.out.println("After role conversion: " + userRole);
+
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid role! Use 'USER' or 'ADMIN'.");
         }
         User user = new User();
         user.setName(name);
         user.setEmail(email);
+        user.setRole(userRole);
         user.setPassword(passwordEncoder.encode(password));
         if (image != null && !image.isEmpty()) {
             try {

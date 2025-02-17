@@ -1,6 +1,6 @@
 package com.example.FlowerShop.controller;
 
-import com.example.FlowerShop.Dao.UserDao;
+import com.example.FlowerShop.Repositary.UserDao;
 import com.example.FlowerShop.Services.WishlistService;
 import com.example.FlowerShop.models.User;
 import com.example.FlowerShop.models.Wishlist;
