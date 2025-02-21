@@ -10,12 +10,13 @@ import com.example.FlowerShop.models.Order;
 import com.example.FlowerShop.models.OrderItem;
 import com.example.FlowerShop.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -58,5 +59,31 @@ public class OrderService {
         orderDao.save(order);
 
         return ResponseEntity.ok("Order placed successfully!");
+    }
+
+
+    public ResponseEntity<List<OrderRequest>> viewOrders() {
+        List<OrderRequest> orderDTOs = orderDao.findAll().stream()
+                .map(order -> new OrderRequest(order))
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(orderDTOs, HttpStatus.OK);
+    }
+
+    public ResponseEntity<String> approveOrder(Integer orderId) {
+        Order order=orderDao.findById(orderId).orElseThrow(()->new RuntimeException("Order not found"));
+        order.setStatus("Approved");
+        orderDao.save(order);
+        return new ResponseEntity<>("approved",HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<List<OrderRequest>> viewOrderUser(Integer userId) {
+        User user = userDao.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Optional<Order> orders = orderDao.findByUser(user);
+        List<OrderRequest> orderRequests = orders.stream()
+                .map(OrderRequest::new) // Convert Order to OrderRequest using the constructor
+                .collect(Collectors.toList());
+        return new ResponseEntity<>(orderRequests, HttpStatus.OK);
     }
 }

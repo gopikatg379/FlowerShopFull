@@ -17,7 +17,7 @@ public class CartItems {
     @JsonBackReference
     private Cart cart;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flower_id")
     private Flower flower;
 

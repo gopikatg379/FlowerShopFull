@@ -10,6 +10,9 @@ public class Flower {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer flowerId;
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category;
     private String flowerName;
     private String color;
     private Double price;
@@ -62,5 +65,13 @@ public class Flower {
 
     public void setImage(String image) {
         this.image = image;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }

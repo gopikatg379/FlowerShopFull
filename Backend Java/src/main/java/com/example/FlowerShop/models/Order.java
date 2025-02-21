@@ -18,7 +18,8 @@ public class Order {
     private User user;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> orderItems = new ArrayList<>();
+    private List<OrderItem> orderItems;
+
 
     private String address;
     private Long phone;

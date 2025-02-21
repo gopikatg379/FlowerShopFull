@@ -27,11 +27,12 @@ public class FlowerController {
             @RequestParam("color") String color,
             @RequestParam("price") Double price,
             @RequestParam("description") String description,
-            @RequestParam("image") MultipartFile image) throws IOException {
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("category_id") Integer categoryId) throws IOException {
         if (image.isEmpty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No image file uploaded.");
         }
-        return flowerService.addFlower(flowerName, color, price, description, image);
+        return flowerService.addFlower(flowerName, color, price, description, image,categoryId);
     }
 
     @GetMapping("get/flowers")
@@ -54,5 +55,20 @@ public class FlowerController {
     public ResponseEntity<Map<String,Integer>> getFlowerStatistics(){
         Map<String, Integer> flowerStatistics = flowerService.getFlowerStatistics();
         return ResponseEntity.ok(flowerStatistics);
+    }
+
+    @DeleteMapping("delete/{flower_id}")
+    public ResponseEntity<String> deleteFlower(@PathVariable Integer flower_id){
+        return flowerService.deleteFlower(flower_id);
+    }
+
+    @PutMapping("update/{flower_id}")
+    public ResponseEntity<String> updateFlower(@PathVariable Integer flower_id,
+                                               @RequestParam("flower_name") String flowerName,
+                                               @RequestParam("price") double price,
+                                               @RequestParam("color") String color,
+                                               @RequestParam("description") String description,
+                                               @RequestParam("image") MultipartFile image) throws IOException {
+        return flowerService.updateFlower(flower_id,flowerName,price,color,description,image);
     }
 }

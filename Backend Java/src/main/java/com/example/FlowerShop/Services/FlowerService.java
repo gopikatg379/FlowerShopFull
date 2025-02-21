@@ -1,7 +1,9 @@
 package com.example.FlowerShop.Services;
 
-import com.example.FlowerShop.Repositary.FlowerDao;
+import com.example.FlowerShop.Repositary.*;
+import com.example.FlowerShop.models.Category;
 import com.example.FlowerShop.models.Flower;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +23,25 @@ import java.util.Optional;
 public class FlowerService {
     @Autowired
     FlowerDao flowerDao;
+    @Autowired
+    CategoryDao categoryDao;
+    @Autowired
+    OrderDao orderDao;
+    @Autowired
+    CartItemDao cartItemDao;
+    @Autowired
+    WishlistDao wishlistDao;
     private static final String UPLOAD_DIR = "uploads/";
 
-    public ResponseEntity<String> addFlower(String flowerName, String color, Double price, String description, MultipartFile image) throws IOException {
+    public ResponseEntity<String> addFlower(String flowerName, String color, Double price, String description, MultipartFile image,Integer categoryId) throws IOException {
             if (image.isEmpty()) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty.");
             }
+            Optional<Category> category = categoryDao.findById(categoryId);
+            if(!category.isPresent()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category not found.");
+            }
+            Category category1 = category.get();
             String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
             Path path = Paths.get(UPLOAD_DIR + fileName);
             Files.createDirectories(path.getParent()); // Ensure directory exists
@@ -37,6 +52,8 @@ public class FlowerService {
             flower.setPrice(price);
             flower.setDescription(description);
             flower.setImage(fileName);
+            flower.setCategory(category1);
+
             flowerDao.save(flower);
             return new ResponseEntity<>("success",HttpStatus.OK);
     }
@@ -64,5 +81,33 @@ public class FlowerService {
         }
 
         return statistics;
+    }
+
+    @Transactional
+    public ResponseEntity<String> deleteFlower(Integer flowerId) {
+        wishlistDao.deleteByFlower_FlowerId(flowerId);
+        cartItemDao.deleteByFlower_FlowerId(flowerId);
+        orderDao.deleteByFlowerId(flowerId);
+        flowerDao.deleteById(flowerId);
+        return new ResponseEntity<>("deleted",HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<String> updateFlower(Integer flower_id,String flowerName, double price, String color, String description, MultipartFile image) throws IOException {
+        Optional<Flower> optionalFlower = flowerDao.findById(flower_id);
+
+        String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
+        Path path = Paths.get(UPLOAD_DIR + fileName);
+        Files.createDirectories(path.getParent()); // Ensure directory exists
+        Files.write(path, image.getBytes());
+
+        Flower flower = optionalFlower.get();
+        flower.setFlower_name(flowerName);
+        flower.setColor(color);
+        flower.setPrice(price);
+        flower.setDescription(description);
+        flower.setImage(fileName);
+        flowerDao.save(flower);
+        return ResponseEntity.ok("Flower updated successfully!");
     }
 }

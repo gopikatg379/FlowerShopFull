@@ -1,6 +1,8 @@
 package com.example.FlowerShop.models;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "orderItem_table")
@@ -15,6 +17,7 @@ public class OrderItem {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "flower_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Flower flower;
 
     private Integer quantity;
