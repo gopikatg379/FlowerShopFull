@@ -2,6 +2,7 @@ package com.example.FlowerShop.Services;
 
 import com.example.FlowerShop.Repositary.FlowerDao;
 import com.example.FlowerShop.Repositary.OrderDao;
+import com.example.FlowerShop.Repositary.OrderItemDao;
 import com.example.FlowerShop.Repositary.UserDao;
 import com.example.FlowerShop.dto.OrderItemRequest;
 import com.example.FlowerShop.dto.OrderRequest;
@@ -9,6 +10,7 @@ import com.example.FlowerShop.models.Flower;
 import com.example.FlowerShop.models.Order;
 import com.example.FlowerShop.models.OrderItem;
 import com.example.FlowerShop.models.User;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,8 @@ public class OrderService {
     private UserDao userDao;
     @Autowired
     private FlowerDao flowerDao;
+    @Autowired
+    private OrderItemDao orderItemDao;
     public ResponseEntity<String> placeOrder(Integer userId, OrderRequest orderRequest) {
         User user = userDao.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -80,10 +84,18 @@ public class OrderService {
 
     public ResponseEntity<List<OrderRequest>> viewOrderUser(Integer userId) {
         User user = userDao.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        Optional<Order> orders = orderDao.findByUser(user);
+        List<Order> orders = orderDao.findByUser(user);
         List<OrderRequest> orderRequests = orders.stream()
                 .map(OrderRequest::new) // Convert Order to OrderRequest using the constructor
                 .collect(Collectors.toList());
         return new ResponseEntity<>(orderRequests, HttpStatus.OK);
+    }
+
+
+    public ResponseEntity<String> cancelOrder(Integer orderId) {
+        Order order=orderDao.findById(orderId).orElseThrow(()->new RuntimeException("Order not found"));
+        order.setStatus("Cancelled");
+        orderDao.save(order);
+        return new ResponseEntity<>("cancelled",HttpStatus.OK);
     }
 }

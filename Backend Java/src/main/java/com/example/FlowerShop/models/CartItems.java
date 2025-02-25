@@ -1,6 +1,8 @@
 package com.example.FlowerShop.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,8 +19,9 @@ public class CartItems {
     @JsonBackReference
     private Cart cart;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "flower_id")
+    @JsonManagedReference
     private Flower flower;
 
     @JoinColumn(name = "quantity", columnDefinition = "int default 1")

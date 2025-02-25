@@ -6,6 +6,7 @@ import com.example.FlowerShop.dto.OrderRequest;
 import com.example.FlowerShop.models.Order;
 import com.example.FlowerShop.models.User;
 import com.example.FlowerShop.security.JwtUtil;
+import org.aspectj.lang.annotation.DeclareError;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,6 @@ public class OrderController {
     }
     @PutMapping("approve/{orderId}")
     public ResponseEntity<String> approveOrder(@PathVariable Integer orderId){
-        System.out.println("hi");
         return orderService.approveOrder(orderId);
     }
     @GetMapping("view_order")
@@ -52,5 +52,9 @@ public class OrderController {
         String jwt = token.substring(7);
         Integer userId = getUserIdFromToken(jwt);
         return orderService.viewOrderUser(userId);
+    }
+    @DeleteMapping("cancel_order/{orderId}")
+    public ResponseEntity<String> deleteOrder(@PathVariable Integer orderId){
+        return orderService.cancelOrder(orderId);
     }
 }

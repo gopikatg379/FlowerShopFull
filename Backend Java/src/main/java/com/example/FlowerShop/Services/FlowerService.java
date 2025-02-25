@@ -93,8 +93,13 @@ public class FlowerService {
     }
 
 
-    public ResponseEntity<String> updateFlower(Integer flower_id,String flowerName, double price, String color, String description, MultipartFile image) throws IOException {
+    public ResponseEntity<String> updateFlower(Integer flower_id,String flowerName, double price, String color, String description, MultipartFile image,Integer categoryId) throws IOException {
         Optional<Flower> optionalFlower = flowerDao.findById(flower_id);
+        Optional<Category> category = categoryDao.findById(categoryId);
+        if(!category.isPresent()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category not found.");
+        }
+        Category category1 = category.get();
 
         String fileName = System.currentTimeMillis() + "_" + image.getOriginalFilename();
         Path path = Paths.get(UPLOAD_DIR + fileName);
@@ -107,7 +112,20 @@ public class FlowerService {
         flower.setPrice(price);
         flower.setDescription(description);
         flower.setImage(fileName);
+        flower.setCategory(category1);
         flowerDao.save(flower);
         return ResponseEntity.ok("Flower updated successfully!");
+    }
+
+    public Map<String, Integer> getFlowerStatisticsByCategory() {
+        List<Flower> flowers = flowerDao.findAll();
+        Map<String, Integer> statistics = new HashMap<>();
+
+        for (Flower flower : flowers) {
+            String categoryName = flower.getCategory().getCategoryName(); // Assuming Flower has a Category field
+            statistics.put(categoryName, statistics.getOrDefault(categoryName, 0) + 1);
+        }
+
+        return statistics;
     }
 }

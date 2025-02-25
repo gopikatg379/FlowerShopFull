@@ -52,10 +52,11 @@ public class FlowerController {
     }
 
     @GetMapping("statistics")
-    public ResponseEntity<Map<String,Integer>> getFlowerStatistics(){
-        Map<String, Integer> flowerStatistics = flowerService.getFlowerStatistics();
-        return ResponseEntity.ok(flowerStatistics);
+    public ResponseEntity<Map<String, Integer>> getFlowerStatisticsByCategory() {
+        Map<String, Integer> categoryStatistics = flowerService.getFlowerStatisticsByCategory();
+        return ResponseEntity.ok(categoryStatistics);
     }
+
 
     @DeleteMapping("delete/{flower_id}")
     public ResponseEntity<String> deleteFlower(@PathVariable Integer flower_id){
@@ -68,7 +69,8 @@ public class FlowerController {
                                                @RequestParam("price") double price,
                                                @RequestParam("color") String color,
                                                @RequestParam("description") String description,
-                                               @RequestParam("image") MultipartFile image) throws IOException {
-        return flowerService.updateFlower(flower_id,flowerName,price,color,description,image);
+                                               @RequestParam("image") MultipartFile image,
+                                               @RequestParam("category_id") Integer categoryId) throws IOException {
+        return flowerService.updateFlower(flower_id,flowerName,price,color,description,image,categoryId);
     }
 }

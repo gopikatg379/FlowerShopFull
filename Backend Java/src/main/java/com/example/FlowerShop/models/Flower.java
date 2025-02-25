@@ -1,5 +1,6 @@
 package com.example.FlowerShop.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ public class Flower {
     private Integer flowerId;
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonBackReference
     private Category category;
     private String flowerName;
     private String color;

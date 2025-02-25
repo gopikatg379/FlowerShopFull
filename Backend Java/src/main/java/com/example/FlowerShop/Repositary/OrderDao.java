@@ -9,14 +9,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface OrderDao extends JpaRepository<Order,Integer> {
-    Optional<Order>findByUser(User user);
+    List<Order> findByUser(User user);
     @Modifying
     @Transactional
     @Query("DELETE FROM OrderItem o WHERE o.flower.id = :flowerId")
     void deleteByFlowerId(@Param("flowerId") Integer flowerId);
-
 }
